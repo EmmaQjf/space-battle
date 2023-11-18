@@ -26,14 +26,14 @@ const textStyle = [
   const hardBtn = document.getElementById('hard-button')
   const muteBtn = document.getElementById('mute-toggle')
   const musicTrack = document.getElementById('music-track')
-  const explosionSound = new Audio('ExplosionSound.mp3')
   const myRange = document.getElementById('my-range')
   const volume = document.getElementById('volume')
   const battleEl = document.getElementById('space-battle')
+  const explosionSound = new Audio('ExplosionSound.mp3')
 
   volume.innerHTML = myRange.value
 
-  // Function to change values on volume slider
+  // Function to change values on volume slider and update the displayed volume
   myRange.oninput = function () {
     volume.innerHTML = this.value
   }

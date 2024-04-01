@@ -4,15 +4,15 @@ const textStyle = [
     'background: rgb(37, 39, 45)',
     'text-shadow: 0px -1px 4px white, 0px -2px 10px yellow, 0px -10px 20px #ff8000, 0px -18px 40px red',
     'font-family: "Orbitron", sans-serif',
-  ].join(';');
+  ].join(';')
   
-  console.log("%cSpace Battle", textStyle);
+  console.log("%cSpace Battle", textStyle)
   
   setTimeout(function() {
-    console.log("Player 1 Ready?");
+    console.log("Player 1 Ready?")
   }, 3000);
   setTimeout(function() {
-    console.clear();
+    console.clear()
   }, 9000);
 
   // Assign variable names to buttons
@@ -25,6 +25,8 @@ const textStyle = [
   const normalBtn = document.getElementById('normal-button')
   const hardBtn = document.getElementById('hard-button')
   const muteBtn = document.getElementById('mute-toggle')
+  
+  // Assign variable names to audio elements and space battle element 
   const musicTrack = document.getElementById('music-track')
   const myRange = document.getElementById('my-range')
   const volume = document.getElementById('volume')
@@ -38,11 +40,12 @@ const textStyle = [
     volume.innerHTML = this.value
   }
 
-  // Function for music
+  // Function to set volume for music based on slider value
   function setVolume() {
     musicTrack.volume = myRange.value / 100
   }
 
+  // Event listener to set volume when slider is changed
   myRange.addEventListener('change', setVolume)
 
   // Toggle mute
@@ -90,7 +93,7 @@ const textStyle = [
   // Subclass for the player ship
   class PlayerShip extends Ship {
     constructor() {
-      super('USS Assembly', 20, 5, 0.7);
+      super('USS Assembly', 20, 5, 0.7)
     }
   }
 
@@ -107,17 +110,14 @@ const textStyle = [
     return randomNum
   }
 
-  // Instantiate player ship and a unique alien ship with assigned values
+  // Instantiate player ship
   const USSAssembly = new PlayerShip()
 
-  const distortedET = new AlienShip('Distorted ET', 15, 4, 0.7)
-
   // Array to hold all alien ships for a given round
-  let alienShips = [
-    distortedET
-  ]
-
-  // Function to generate alien ships and push them into alienShips array
+  let alienShips = []
+  
+  // Functions to generate alien ships on different difficulties and push them into alienShips array
+  // Name, Hull, Firepower, Accuracy
   function generateShipsEasy(num) {
     for (let i = 1; i <= num; i++) {
         const alienShip = new AlienShip(`Alien Ship ${i}`, randomization(6, 3), randomization(4, 2), (randomization(8, 6)) / 10)
@@ -144,30 +144,16 @@ const textStyle = [
 
   // Render function to display the messages stored in messageArr as an unordered list in the game status area
   gameStatus.render = () => {
-    gameStatus.innerHTML = `<ul> ${
+    gameStatus.innerHTML = `${
       messageArr.map((item => {
-        return `<li>
+        return `<p>
          ${item} 
-         </li>`
+         </p>`
       })).join('')
-    }</ul>`
+    }`
   }
 
-  // Event listener for start button, which empties alienShips array and randomly generates six alien ships
-  startBtn.addEventListener('click', () => {
-    // Start button disappears and the attack button appears upon click
-    startBtn.style.display = 'none';
-    attackBtn.style.display = 'block';
-    // Resets player ship health, the battle element message, game status area, battles won, etc.
-    USSAssembly.hull = 20;
-    battleEl.textContent = '';
-    battleEl.textContent = `I've got a GREAT feeling about this... USS Assembly hull integrity is at ${USSAssembly.hull}`;
-    gameStatus.innerHTML = '';
-    messageArr = [];
-    battlesWon = 0;
-    scoreBoard.textContent = `Alien ships defeated: ${battlesWon}`
-  })
-
+  // Event listeners for difficulty buttons that generates new alien ships for the round
   easyBtn.addEventListener('click', ()=>{
     startBtn.style.display = 'block'
     easyBtn.style.display = 'none'
@@ -195,44 +181,65 @@ const textStyle = [
     generateShipsHard(6)
   })
 
+  // Event listener for start button
+  startBtn.addEventListener('click', () => {
+
+    // Start button disappears and the attack button appears upon click
+    startBtn.style.display = 'none'
+    attackBtn.style.display = 'block'
+
+    // Resets player ship health, the battle element message, game status area, battles won, etc.
+    USSAssembly.hull = 20
+    battleEl.textContent = ''
+    battleEl.textContent = `I've got a GREAT feeling about this... USS Assembly hull integrity is at ${USSAssembly.hull}`
+    gameStatus.innerHTML = ''
+    messageArr = []
+    battlesWon = 0
+    scoreBoard.textContent = `Alien ships defeated: ${battlesWon}`
+    })
+
   // Event listener for attack button
   attackBtn.addEventListener('click', () => {
 
     // Resets messageArr between each round of attacks
-    messageArr = [];
+    messageArr = []
 
     // Attacks the first ship in the alienShips array, and alien ship fires back if it survives
     USSAssembly.attack(alienShips[0])
     if (alienShips[0].hull > 0) {
       alienShips[0].attack(USSAssembly)
     } 
-  
+    
+    // Update player ship and alien ship hull integrity after each attack
+    battleEl.innerHTML = `<ul><li>USS Assembly hull is at ${USSAssembly.hull},</li>
+    <li>Alien Ship hull at ${alienShips[0].hull}</li></ul>`
+
     // If the alien ship loses all its health, messages update to reflect battles won, current hull integrity, etc., and displays flee and continue buttons
     if (alienShips[0].hull <= 0) {
       battlesWon = battlesWon + 1
       scoreBoard.textContent = `Alien ships defeated: ${battlesWon}`
-      attackBtn.style.display = 'none';
-      continueBtn.style.display = 'block';
-      fleeBtn.style.display = 'block';
-      battleEl.textContent = '';
+      attackBtn.style.display = 'none'
+      continueBtn.style.display = 'block'
+      fleeBtn.style.display = 'block'
+      battleEl.textContent = ''
       battleEl.textContent = `USS Assembly hull integrity is at ${USSAssembly.hull}`
       // Change alien image to an explosion
-      alienImg.src = "https://i.imgur.com/ivuwvOw.png";
+      alienImg.src = "https://i.imgur.com/ivuwvOw.png"
       explosionSound.play()
-      explosionSound.volume = .3
+      explosionSound.volume = .1
       // Add animation class to alien image to make it look like it's exploding
-      alien.classList.add("scaleImage")
+      alienImg.classList.add("scaleImage")
     }
 
-    // If player ship dies, display taunting message and and display reset button
+    // If player ship dies, display taunting message and display reset button
     if (USSAssembly.hull <= 0) {
-      resetBtn.style.display = 'block';
-      attackBtn.style.display = 'none';
+      resetBtn.style.display = 'block'
+      attackBtn.style.display = 'none'
       battleEl.textContent = `YOU HAD ONE JOB!!!`
       // Change player ship image to an explosion and add animation class
       USS.src="https://i.imgur.com/ivuwvOw.png"
       explosionSound.play()
-      explosionSound.volume = .3
+      explosionSound.volume = .1
       USS.classList.add("scaleImage")
     }
     // runs the render function to update gameStatus messages after each round of attacks
@@ -266,8 +273,8 @@ const textStyle = [
   fleeBtn.addEventListener('click',() => {
     // Displays taunting message and allows player to start again
     battleEl.textContent = `Whats the difference between you and a COWARD?`
-    continueBtn.style.display = 'none';
-    fleeBtn.style.display = 'none';
+    continueBtn.style.display = 'none'
+    fleeBtn.style.display = 'none'
     easyBtn.style.display = 'block'
     normalBtn.style.display = 'block'
     hardBtn.style.display = 'block'
@@ -278,16 +285,15 @@ const textStyle = [
   // Event listener for reset button
   resetBtn.addEventListener('click',() => {
     // Sends the player back to the opening screen, with initial battle message, blank scoreboard and game status, etc.
-    resetBtn.style.display = 'none';
+    resetBtn.style.display = 'none'
     easyBtn.style.display = 'block'
     normalBtn.style.display = 'block'
     hardBtn.style.display = 'block'
-    gameStatus.innerHTML = '';
+    gameStatus.innerHTML = ''
     battleEl.innerHTML = `Player 1 Ready?`
-    messageArr = [];
-    scoreBoard.innerHTML = '';
+    messageArr = []
+    scoreBoard.innerHTML = ''
     // Reset player ship image
     USS.src="https://i.imgur.com/Q5QUnKG.png"
     USS.classList.remove("scaleImage")
   })
-

@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width">
   <title>Space Battle Game</title>
   <link href="style.css" rel="stylesheet" type="text/css" />
- 
   <link href="https://fonts.googleapis.com/css2?family=Orbitron&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Orbitron&display=swap" rel="stylesheet">
 </head>
@@ -15,26 +14,27 @@
   <div id="stars"></div>
   <div id="stars2"></div>
   <div id="stars3"></div>
-  <div id="audio-container">
-    <audio id="music-track" src="BackgroundMusic.mp3" type="audio/mpeg" autoplay>
 
-    </audio>
+  <div id="audio-container">
+    <audio id="music-track" src="BackgroundMusic.mp3" type="audio/mpeg" autoplay></audio>
     <button class="button" id="mute-toggle">Play</button>
     <input type="range" min="1" max="100" value="20" class="slider" id="my-range">
     <label id="volume"></label>
   </div>
+
   <div class="header">
     <h1>Space Battle</h1>
   </div>
+
   <div class="content-container">
-    <div id="scoreboard"></div> <!-- innerHTML OR innerText -->
+    <div id="scoreboard"></div>
     <div id="ships">
-      
       <img src="https://i.imgur.com/Q5QUnKG.png" id="USS"> <img src="https://i.imgur.com/8HR72Rv.png" id="alien">
     </div>
-    <div id="space-battle">Player 1 Ready?</div> <!-- innerHTML OR innerText -->
-    <div id="game-status" style="height:auto;width:auto;text-align:center;overflow:auto;"></div> <!-- innerHTML OR innerText -->
+    <div id="space-battle">Player 1 Ready?</div> 
+    <div id="game-status" style="height:auto;width:auto;text-align:center;overflow:auto;"></div>
   </div>
+
   <div class="button-container">
     <button class="button" id="start-button">Start</button>
     <button class="button" id="attack-button">Attack!</button>
@@ -45,10 +45,12 @@
     <button class="button" id="normal-button">Normal</button>
     <button class="button" id="hard-button">Hard</button>
   </div>
+
   <div class="footer-container">
     <p>A <span id="group-name">Fantastic 8</span> Production</p>
     <p id="copyright">&copy; 2023</p>
   </div>
+  
   <script src="script.js"></script>
 </body>
 
